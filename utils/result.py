@@ -129,14 +129,14 @@ class Result[K, E](ABC):
 
 
 class Ok[T, E](Result[T, E]):
-    __match_args__ = ('value',)
+    __match_args__ = ('_value',)
 
     def __init__(self, value: T):
-        self.value = value
+        self._value = value
 
 
 class Err[T, E](Result[T, E]):
-    __match_args__ = ('error',)
+    __match_args__ = ('_error',)
 
     def __init__(self, error: E):
-        self.error = error
+        self._error = error
