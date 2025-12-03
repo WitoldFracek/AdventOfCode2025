@@ -24,20 +24,24 @@ def add_and_count_zeros(acc: Tuple[int, int], fn: Callable[[int], int]) -> Tuple
         zeros += 1
     return res, zeros
 
+
 def add_and_count_zero_crossings(
         acc: Tuple[int, int],
         triplet: Tuple[str, int, Callable[[int, int], int]]
 ) -> Tuple[int, int]:
     x, crossings = acc
     direction, y, fn = triplet
-    if y > 99:
-        crossings += y // 100
-    res = fn(x, y)
-    if res == 0:
-        return res, crossings
-    if direction == 'R' and res < x:
+    if y == 0:
+        return x, crossings
+    full_circles = y // 100
+    remainder = y % 100
+    crossings += full_circles
+    res = fn(x, remainder)
+    if res == 0 and x != 0:
         crossings += 1
-    elif res > x:
+    elif direction == 'R' and res < x != 0:
+        crossings += 1
+    elif direction == 'L' and res > x != 0:
         crossings += 1
     return res, crossings
 
@@ -66,7 +70,7 @@ def sol_b() -> int:
 
 def main():
     print(f'Solution a: {sol_a()}')
-    print(f'Solution b: {sol_b()}')  # Too high: 7404
+    print(f'Solution b: {sol_b()}')
 
 
 if __name__ == '__main__':
