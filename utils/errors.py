@@ -4,7 +4,7 @@ class UnrecoverableError(Exception):
     pass
 
 
-def panic(msg: str) -> Never:
+def panic(msg: str = '!') -> Never:
     """
     Raises an UnrecoverableError with the given message.
 

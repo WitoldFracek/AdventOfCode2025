@@ -1,43 +1,30 @@
-from qwlist import Lazy, QList
+from qwlist import Lazy
 from utils.file import read_lines
-from utils.option import Option, Some, None_
-from utils.result import Result, Ok, Err
-import utils.result as result
 
 
-def possible_jolts(s: str) -> Lazy[int]:
-    return (
-        QList(s[:-1]).enumerate().flatmap(lambda idx_char:
-            QList(s)
-            .skip(idx_char[0] + 1)
-            .map(lambda c: (idx_char[1], c))
-            .map(''.join)
-            .map(int)
-        )
-    )
-
-
-def find_largest_from_n_batteries(s: str, n: int) -> int:
-    digits = QList(s).map(int).collect()
-    maxes = QList()
+def find_largest_from_n_batteries(string: str, n: int) -> int:
+    ret = 0
+    nums = [int(c) for c in string]
+    start_index = 0
+    last_available_index = len(nums) - n + 1
+    slice_ = nums[start_index:last_available_index]
     for _ in range(n):
-        current_max = max(digits)
-        i = digits.index(current_max)
-        maxes.append((i, current_max))
-        digits[i] = 0
-    return int(''.join(
-        maxes
-        .sorted(key=lambda pair: pair[0])
-        .map(lambda pair: str(pair[1]))
-    ))
-
+        ret *= 10
+        m = max(slice_)
+        ret += int(m)
+        mi = slice_.index(m)
+        start_index = mi + 1
+        slice_ = slice_[start_index:]
+        if last_available_index < len(nums):
+            slice_.append(nums[last_available_index])
+        last_available_index += 1
+    return ret
 
 
 def sol_a() -> int:
     res = (
         Lazy(read_lines('input.txt'))
-        .map(possible_jolts)
-        .map(lambda ls: ls.max())
+        .map(lambda s: find_largest_from_n_batteries(s, 2))
         .sum()
     )
     return res
@@ -45,11 +32,10 @@ def sol_a() -> int:
 
 def sol_b() -> int:
     res = (
-        Lazy(read_lines('test.txt'))
-        .map(lambda x: find_largest_from_n_batteries(x, 12))
-
+        Lazy(read_lines('input.txt'))
+        .map(lambda s: find_largest_from_n_batteries(s, 12))
+        .sum()
     )
-    res.foreach(print)
     return res
 
 
