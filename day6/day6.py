@@ -33,8 +33,26 @@ def sol_a() -> int:
 
 
 def sol_b() -> int:
-
-    return -1
+    lines = QList(read_lines('input.txt', do_strip=False)).map(lambda s: s.replace('\n', ''))
+    nums_and_ops = Lazy(zip_longest(*lines, fillvalue=' '))
+    total = 0
+    acc = []
+    acc_op = None
+    for row in nums_and_ops:
+        *digits, op = row
+        digits = [d.strip() for d in digits]
+        num = ''.join(digits)
+        if op != ' ':
+            acc_op = op
+        if not num:
+            total += sum(acc) if acc_op == '+' else mul(*acc)
+            acc_op = None
+            acc = []
+        else:
+            acc.append(int(num))
+    if acc:
+        total += sum(acc) if acc_op == '+' else mul(*acc)
+    return total
 
 
 def main():
