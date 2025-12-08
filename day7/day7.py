@@ -1,8 +1,5 @@
 from qwlist import Lazy, QList
 from utils.file import read_lines
-from utils.option import Option, Some, None_
-from utils.result import Result, Ok, Err
-import utils.result as result
 
 
 type Grid = QList[QList[str]]
@@ -39,7 +36,6 @@ def propagate_quantum_stream(grid: Grid) -> NumGrid:
             if col == '|':
                 num_grid[i][j] += num_grid[i-1][j]
     return num_grid
-
 
 
 def sol_a() -> int:
