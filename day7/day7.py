@@ -1,5 +1,8 @@
 from qwlist import Lazy, QList
 from utils.file import read_lines
+from utils.option import Option, Some, None_
+from utils.result import Result, Ok, Err
+import utils.result as result
 
 
 type Grid = QList[QList[str]]
